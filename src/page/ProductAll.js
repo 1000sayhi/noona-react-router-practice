@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
-
 import ProductCard from "../component/ProductCard";
 
 const ProductAll = () => {

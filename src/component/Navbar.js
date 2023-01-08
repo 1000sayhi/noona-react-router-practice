@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-regular-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = ({ authenticate }) => {
-  const menulist = [
+const Navbar = ({ authenticate, setAuthenticate }) => {
+  const menuList = [
     "여성",
     "Devided",
     "남성",
@@ -15,14 +15,10 @@ const Navbar = ({ authenticate }) => {
     "Sale",
     "지속가능성",
   ];
+  let [width, setWidth] = useState(0);
   const navigate = useNavigate();
-
   const goToLogin = () => {
     navigate("/login");
-  };
-  const goToAllProductPage = () => {
-    authenticate = false;
-    navigate("/");
   };
   const search = (event) => {
     if (event.key === "Enter") {
@@ -32,25 +28,37 @@ const Navbar = ({ authenticate }) => {
   };
   return (
     <div>
-      <div className="login-button">
+      <div className="side-menu" style={{ width: width }}>
+        <button className="closebtn" onClick={() => setWidth(0)}>
+          &times;
+        </button>
+        <div className="side-menu-list" id="menu-list">
+          {menuList.map((menu, index) => (
+            <button key={index}>{menu}</button>
+          ))}
+        </div>
+      </div>
+      <div className="nav-header">
+        <div className="burger-menu hide">
+          <FontAwesomeIcon icon={faBars} onClick={() => setWidth(250)} />
+        </div>
         <FontAwesomeIcon icon={faUser} />
         <FontAwesomeIcon icon={faHeart} />
-        <div onClick={authenticate ? goToAllProductPage : goToLogin}>
-          {authenticate ? "log out" : "login"}
+        <div onClick={authenticate ? () => setAuthenticate(false) : goToLogin}>
+          {authenticate ? "로그아웃" : "로그인"}
         </div>
       </div>
       <div className="nav-section">
-        <img
-          onClick={() => {
-            navigate("/");
-          }}
-          width={100}
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/2560px-H%26M-Logo.svg.png"
-        />
+        <Link to="/">
+          <img
+            width={100}
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/2560px-H%26M-Logo.svg.png"
+          />
+        </Link>
       </div>
       <div className="menu-area">
         <ul className="menu-list">
-          {menulist.map((menu, index) => (
+          {menuList.map((menu, index) => (
             <li key={index}>{menu}</li>
           ))}
         </ul>
